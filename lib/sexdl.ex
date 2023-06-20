@@ -5,10 +5,7 @@ defmodule Sexdl do
 
   @on_load :init
 
-  defmodule NifNotLoaded do
-    defexception [:message]
-  end
-
+  import Sexdl.Utils, only: [nif_not_loaded!: 0]
 
   def init, do: :erlang.load_nif('c_src/sdl_nif', 0) 
 
@@ -16,9 +13,10 @@ defmodule Sexdl do
   def sdl_init(_flags), do: nif_not_loaded!()
 
   @spec sdl_create_window(String.t, integer, integer, integer, integer, integer) :: integer
-  def sdl_create_window(_title, _x, _y, _w, _h, _flags) do
-    nif_not_loaded!()
-  end
+  def sdl_create_window(_title, _x, _y, _w, _h, _flags), do: nif_not_loaded!()
+
+  @spec sdl_get_window_surface(non_neg_integer) :: integer | none
+  def sdl_get_window_surface(_flags), do: nif_not_loaded!()
 
   def sdl_init_timer, do: 0x00000001
   def sdl_init_audio, do: 0x00000010
@@ -46,7 +44,4 @@ defmodule Sexdl do
   def sdl_windowpos_centered, do: 0x2FFF0000
   def sdl_window_shown, do: 0x00000004
 
-  defp nif_not_loaded! do
-    raise NifNotLoaded, message: "could not load nif"
-  end
 end
