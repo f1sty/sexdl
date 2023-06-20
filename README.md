@@ -5,10 +5,10 @@ SDL wrapper library for Elixir
 
 ## TODO
 
-[*] - refresh on NIFs
-[ ] - look into `enif_alloc_resource` more and decide how to handle pointers
-[ ] - research on SDL library
-[ ] - MVP with window showed
+- [x] refresh on NIFs
+- [ ] look into `enif_alloc_resource` more and decide how to handle pointers
+- [ ] research on SDL library
+- [ ] MVP with window showed
 
 ## Installation
 
