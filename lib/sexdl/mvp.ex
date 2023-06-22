@@ -9,7 +9,11 @@ defmodule Sexdl.Mvp do
          img_type <- Image.img_init_png(),
          ^img_type = Image.img_init(img_type),
          window_surface <- S.sdl_get_window_surface(window) do
-           nil
+           Process.sleep(3000)
+           S.sdl_free_surface(window_surface)
+           Image.img_quit()
+           S.sdl_destroy_window(window)
+           S.sdl_quit()
          end
   end
 end

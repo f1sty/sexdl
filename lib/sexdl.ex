@@ -16,7 +16,16 @@ defmodule Sexdl do
   def sdl_create_window(_title, _x, _y, _w, _h, _flags), do: nif_not_loaded!()
 
   @spec sdl_get_window_surface(non_neg_integer) :: integer | none
-  def sdl_get_window_surface(_flags), do: nif_not_loaded!()
+  def sdl_get_window_surface(_window), do: nif_not_loaded!()
+
+  @spec sdl_free_surface(non_neg_integer) :: integer
+  def sdl_free_surface(_window_surface), do: nif_not_loaded!()
+
+  @spec sdl_destroy_window(non_neg_integer) :: integer
+  def sdl_destroy_window(_window), do: nif_not_loaded!()
+
+  @spec sdl_quit() :: none
+  def sdl_quit(), do: nif_not_loaded!()
 
   def sdl_init_timer, do: 0x00000001
   def sdl_init_audio, do: 0x00000010

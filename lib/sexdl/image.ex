@@ -15,6 +15,11 @@ defmodule Sexdl.Image do
     nif_not_loaded!()
   end
 
+  @spec img_quit() :: integer
+  def img_quit() do
+    nif_not_loaded!()
+  end
+
   def img_init_jpg, do:  0x00000001
   def img_init_png, do:  0x00000002
   def img_init_tif, do:  0x00000004
