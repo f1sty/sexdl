@@ -1,6 +1,6 @@
 defmodule Sexdl.Image do
   @moduledoc """
-  Exports `SDL2/SDL_image.h` funcions.
+  Exports `SDL2/SDL_image.h` functions.
   """
   import Sexdl.Utils, only: [nif_not_loaded!: 0]
 

@@ -1,6 +1,6 @@
 defmodule Sexdl do
   @moduledoc """
-  Exports `SDL2/SDL.h` funcions.
+  Exports `SDL2/SDL.h` functions.
   """
   import Sexdl.Utils, only: [nif_not_loaded!: 0]
 
