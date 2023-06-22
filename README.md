@@ -8,7 +8,7 @@ SDL wrapper library for Elixir
 - [x] refresh on NIFs
 - [ ] look into `enif_alloc_resource` more and decide how to handle pointers
 - [ ] research on SDL library
-- [ ] MVP with window showed
+- [x] MVP with window showed
 
 ## Installation
 
