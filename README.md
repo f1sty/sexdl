@@ -7,23 +7,21 @@ SDL wrapper library for Elixir
 
 - [x] refresh on NIFs
 - [ ] look into `enif_alloc_resource` more and decide how to handle pointers
-- [ ] research on SDL library
+- [x] research on SDL library
 - [x] MVP with window showed
 
-## Installation
+## Run MVP
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `sexdl` to your list of dependencies in `mix.exs`:
+To compile nifs and run minimal program:
 
-```elixir
-def deps do
-  [
-    {:sexdl, "~> 0.1.0"}
-  ]
-end
+```bash
+$ cd c_src/ && ./build.sh && .. && iex -S mix run
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/sexdl>.
+followed by:
 
+```elixir
+iex> Sexdl.Mvp.run(~c"title")
+```
+
+You should see black window appear for abou 3 seconds.
