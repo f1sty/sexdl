@@ -18,6 +18,9 @@ defmodule Sexdl do
   @spec sdl_get_window_surface(non_neg_integer) :: integer | none
   def sdl_get_window_surface(_window), do: nif_not_loaded!()
 
+  @spec sdl_update_window_surface(non_neg_integer) :: integer
+  def sdl_update_window_surface(_window), do: nif_not_loaded!()
+
   @spec sdl_free_surface(non_neg_integer) :: integer
   def sdl_free_surface(_window_surface), do: nif_not_loaded!()
 

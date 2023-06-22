@@ -1,6 +1,8 @@
 #include <SDL2/SDL.h>
 // #include <SDL2/SDL_error.h>
 // #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_error.h>
+#include <SDL2/SDL_log.h>
 #include <SDL2/SDL_surface.h>
 // #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_video.h>
@@ -10,6 +12,7 @@ extern int sdl_init(int flags);
 extern unsigned long int sdl_create_window(char *title, int x, int y, int w,
                                            int h, int flags);
 extern unsigned long int sdl_get_window_surface(unsigned long int window);
+extern int sdl_update_window_surface(unsigned long int window);
 extern int sdl_free_surface(unsigned long int window_surface);
 extern int sdl_destroy_window(unsigned long int window);
 extern int sdl_quit(void);
@@ -81,6 +84,23 @@ static ERL_NIF_TERM sdl_get_window_surface_nif(ErlNifEnv *env, int argc,
   return enif_make_uint64(env, retval);
 }
 
+static ERL_NIF_TERM sdl_update_window_surface_nif(ErlNifEnv *env, int argc,
+                                                  const ERL_NIF_TERM argv[]) {
+  unsigned long int window;
+  int retval;
+
+  if (!enif_get_uint64(env, argv[0], &window)) {
+    return enif_make_badarg(env);
+  }
+
+  if (SDL_UpdateWindowSurface((SDL_Window *)window) != 0) {
+    SDL_Log("error: %s", SDL_GetError());
+    return enif_make_int(env, -1);
+  }
+
+  return enif_make_int(env, 0);
+}
+
 static ERL_NIF_TERM sdl_free_surface_nif(ErlNifEnv *env, int argc,
                                          const ERL_NIF_TERM argv[]) {
   unsigned long int window_surface;
@@ -118,6 +138,7 @@ static ErlNifFunc nif_funcs[] = {
     {"sdl_init", 1, sdl_init_nif},
     {"sdl_create_window", 6, sdl_create_window_nif},
     {"sdl_get_window_surface", 1, sdl_get_window_surface_nif},
+    {"sdl_update_window_surface", 1, sdl_update_window_surface_nif},
     {"sdl_free_surface", 1, sdl_free_surface_nif},
     {"sdl_destroy_window", 1, sdl_destroy_window_nif},
     {"sdl_quit", 0, sdl_quit_nif},

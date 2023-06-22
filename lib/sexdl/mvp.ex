@@ -2,7 +2,7 @@ defmodule Sexdl.Mvp do
   alias Sexdl, as: S
   alias Sexdl.Image
 
-  def run(title, width \\ 800, height \\ 800, bg_image_path \\ "bg.png") do
+  def run(title, width \\ 600, height \\ 600, bg_image_path \\ nil) do
     with 0 = S.sdl_init(S.sdl_init_video()),
          window when window != 0 <-
            S.sdl_create_window(
@@ -16,6 +16,7 @@ defmodule Sexdl.Mvp do
          img_type <- Image.img_init_png(),
          ^img_type = Image.img_init(img_type),
          window_surface <- S.sdl_get_window_surface(window) do
+      S.sdl_update_window_surface(window)
       Process.sleep(3000)
       S.sdl_free_surface(window_surface)
       Image.img_quit()
