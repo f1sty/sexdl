@@ -7,12 +7,12 @@ defmodule Sexdl do
 
   import Sexdl.Utils, only: [nif_not_loaded!: 0]
 
-  def init, do: :erlang.load_nif('c_src/sdl_nif', 0) 
+  def init, do: :erlang.load_nif(~c"c_src/sdl_nif", 0)
 
   @spec sdl_init(non_neg_integer) :: integer | none
   def sdl_init(_flags), do: nif_not_loaded!()
 
-  @spec sdl_create_window(String.t, integer, integer, integer, integer, integer) :: integer
+  @spec sdl_create_window(String.t(), integer, integer, integer, integer, integer) :: integer
   def sdl_create_window(_title, _x, _y, _w, _h, _flags), do: nif_not_loaded!()
 
   @spec sdl_get_window_surface(non_neg_integer) :: integer | none
@@ -52,5 +52,4 @@ defmodule Sexdl do
 
   def sdl_windowpos_centered, do: 0x2FFF0000
   def sdl_window_shown, do: 0x00000004
-
 end
