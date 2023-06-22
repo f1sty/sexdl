@@ -14,7 +14,7 @@ SDL wrapper library for Elixir
 
 ## Run MVP
 
-To compile nifs and run minimal program:
+To compile nifs and launch sanity test program, run:
 
 ```bash
 $ cd c_src/ && ./build.sh && .. && iex -S mix run
@@ -26,4 +26,4 @@ followed by:
 iex> Sexdl.Mvp.run(~c"title")
 ```
 
-You should see black window appear for abou 3 seconds.
+Black window should appear for about 3 seconds.
