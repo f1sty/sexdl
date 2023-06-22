@@ -6,9 +6,11 @@ SDL wrapper library for Elixir
 ## TODO
 
 - [x] refresh on NIFs
-- [ ] look into `enif_alloc_resource` more and decide how to handle pointers
 - [x] research on SDL library
 - [x] MVP with window showed
+- [ ] look into `enif_alloc_resource` more and decide how to handle pointers
+- [ ] separate `SDL2/SDL_video.h` functions into `Sexdl.Video` module (maybe?)
+- [ ] add helper functions into `Sexdl.Video` for `SDL_WindowFlags` enum values
 
 ## Run MVP
 
