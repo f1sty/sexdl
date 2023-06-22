@@ -2,32 +2,32 @@ defmodule Sexdl do
   @moduledoc """
   Exports `SDL2/SDL.h` funcions.
   """
+  import Sexdl.Utils, only: [nif_not_loaded!: 0]
 
   @on_load :init
 
-  import Sexdl.Utils, only: [nif_not_loaded!: 0]
-
   def init, do: :erlang.load_nif(~c"c_src/sdl_nif", 0)
 
-  @spec sdl_init(non_neg_integer) :: integer | none
+  @spec sdl_init(non_neg_integer) :: :ok | {:error, charlist}
   def sdl_init(_flags), do: nif_not_loaded!()
 
-  @spec sdl_create_window(String.t(), integer, integer, integer, integer, integer) :: integer
+  @spec sdl_create_window(charlist, integer, integer, integer, integer, integer) ::
+          {:ok, integer} | {:error, charlist}
   def sdl_create_window(_title, _x, _y, _w, _h, _flags), do: nif_not_loaded!()
 
-  @spec sdl_get_window_surface(non_neg_integer) :: integer | none
+  @spec sdl_get_window_surface(non_neg_integer) :: {:ok, integer} | {:error, charlist}
   def sdl_get_window_surface(_window), do: nif_not_loaded!()
 
-  @spec sdl_update_window_surface(non_neg_integer) :: integer
+  @spec sdl_update_window_surface(non_neg_integer) :: :ok | {:error, charlist}
   def sdl_update_window_surface(_window), do: nif_not_loaded!()
 
-  @spec sdl_free_surface(non_neg_integer) :: integer
+  @spec sdl_free_surface(non_neg_integer) :: :ok
   def sdl_free_surface(_window_surface), do: nif_not_loaded!()
 
-  @spec sdl_destroy_window(non_neg_integer) :: integer
+  @spec sdl_destroy_window(non_neg_integer) :: :ok
   def sdl_destroy_window(_window), do: nif_not_loaded!()
 
-  @spec sdl_quit() :: none
+  @spec sdl_quit() :: :ok
   def sdl_quit(), do: nif_not_loaded!()
 
   def sdl_init_timer, do: 0x00000001

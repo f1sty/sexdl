@@ -1,14 +1,19 @@
 #include <SDL2/SDL.h>
-// #include <SDL2/SDL_error.h>
+#include <SDL2/SDL_error.h>
 #include <SDL2/SDL_image.h>
-// #include <SDL2/SDL_surface.h>
-// #include <SDL2/SDL_timer.h>
-// #include <SDL2/SDL_video.h>
 #include <erl_nif.h>
 
-extern int img_init(int flags);
-extern int img_load(char *path);
-extern int img_quit(void);
+ERL_NIF_TERM atom_error;
+ERL_NIF_TERM atom_ok;
+
+// NOTE: init atoms and resource types in here.
+static int load(ErlNifEnv *env, void **priv_data, ERL_NIF_TERM load_info) {
+  atom_error = enif_make_atom(env, "error");
+  atom_ok = enif_make_atom(env, "ok");
+
+  return 0;
+}
+
 static ERL_NIF_TERM img_init_nif(ErlNifEnv *env, int argc,
                                  const ERL_NIF_TERM argv[]) {
   int flags, retval;
@@ -16,9 +21,12 @@ static ERL_NIF_TERM img_init_nif(ErlNifEnv *env, int argc,
     return enif_make_badarg(env);
   }
 
-  retval = IMG_Init(flags);
+  if (IMG_Init(flags) != flags) {
+    return enif_make_tuple2(
+        env, atom_error, enif_make_string(env, SDL_GetError(), ERL_NIF_UTF8));
+  }
 
-  return enif_make_int(env, retval);
+  return atom_ok;
 }
 
 static ERL_NIF_TERM img_load_nif(ErlNifEnv *env, int argc,
@@ -31,14 +39,19 @@ static ERL_NIF_TERM img_load_nif(ErlNifEnv *env, int argc,
 
   retval = IMG_Load(path);
 
-  return enif_make_uint64(env, retval);
+  if (retval == NULL) {
+    return enif_make_tuple2(
+        env, atom_error, enif_make_string(env, SDL_GetError(), ERL_NIF_UTF8));
+  }
+
+  return enif_make_tuple2(env, atom_ok, enif_make_uint64(env, retval));
 }
 
 static ERL_NIF_TERM img_quit_nif(ErlNifEnv *env, int argc,
                                  const ERL_NIF_TERM argv[]) {
   IMG_Quit();
 
-  return enif_make_int(env, 0);
+  return atom_ok;
 }
 
 static ErlNifFunc nif_funcs[] = {
@@ -47,4 +60,4 @@ static ErlNifFunc nif_funcs[] = {
     {"img_quit", 0, img_quit_nif},
 };
 
-ERL_NIF_INIT(Elixir.Sexdl.Image, nif_funcs, NULL, NULL, NULL, NULL)
+ERL_NIF_INIT(Elixir.Sexdl.Image, nif_funcs, load, NULL, NULL, NULL)
