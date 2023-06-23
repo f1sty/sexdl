@@ -28,3 +28,11 @@ iex> Sexdl.Mvp.run(~c"title")
 ```
 
 Black window should appear for about 3 seconds.
+
+You also can run:
+
+```elixir
+iex> Sexdl.Mvp.run(~c"title", 400, 400, ~c"test.png")
+```
+
+And you should see an owl on black background for the same timespan:).
