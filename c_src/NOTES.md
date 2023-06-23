@@ -1,2 +1,0 @@
-- use `gcc -o myprogram myprogram.c $(sdl2-config --cflags --libs)`
-- https://github.com/libsdl-org/SDL/blob/main/docs/README-linux.md

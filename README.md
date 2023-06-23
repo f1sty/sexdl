@@ -34,7 +34,7 @@ Black window should appear for about 3 seconds.
 You also can run:
 
 ```elixir
-iex> Sexdl.Mvp.run(~c"title", ~c"test.png")
+iex> Sexdl.Mvp.run(~c"title", ~c"priv/test.png")
 ```
 
 And you should see an owl on black background for the same time span:).
