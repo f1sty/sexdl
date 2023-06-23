@@ -2,7 +2,7 @@ defmodule Sexdl.Mvp do
   import Sexdl
   import Sexdl.Image
 
-  def run(title, width \\ 600, height \\ 600, _bg_image_path \\ nil) do
+  def run(title, width \\ 600, height \\ 600, bg_image_path \\ nil) do
     with :ok <- sdl_init(sdl_init_video()),
          {:ok, window} <-
            sdl_create_window(
@@ -13,9 +13,15 @@ defmodule Sexdl.Mvp do
              height,
              sdl_window_shown()
            ),
-         {:ok, window_surface} <- sdl_get_window_surface(window),
-         :ok <- sdl_update_window_surface(window),
-         :ok <- img_init(img_init_png()) do
+         {:ok, window_surface} <- sdl_get_window_surface(window) do
+      if not is_nil(bg_image_path) do
+        img_init(img_init_png())
+        {:ok, window_surface_img} = img_load(bg_image_path)
+        sdl_blit_surface(window_surface_img, nil, window_surface, nil)
+        sdl_free_surface(window_surface_img)
+      end
+
+      sdl_update_window_surface(window)
       Process.sleep(3000)
       sdl_free_surface(window_surface)
       img_quit()

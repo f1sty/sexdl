@@ -32,17 +32,18 @@ int main(int argc, char *argv[]) {
 
         if (image_surface == NULL) {
           printf("Error loading %s: %s\n", image_path, IMG_GetError());
-        } else {
-          optimazed_surface =
-              SDL_ConvertSurface(image_surface, window_surface->format, 0);
-          if (optimazed_surface == NULL) {
-            printf("Error converting surface: %s\n", IMG_GetError());
-          }
-          SDL_FreeSurface(image_surface);
         }
+        // } else {
+        //   optimazed_surface =
+        //       SDL_ConvertSurface(image_surface, window_surface->format, 0);
+        //   if (optimazed_surface == NULL) {
+        //     printf("Error converting surface: %s\n", IMG_GetError());
+        //   }
+        //   SDL_FreeSurface(image_surface);
+        // }
       }
 
-      SDL_BlitSurface(optimazed_surface, NULL, window_surface, NULL);
+      SDL_BlitSurface(image_surface, NULL, window_surface, NULL);
       SDL_UpdateWindowSurface(window);
       SDL_Delay(3000);
     }

@@ -33,7 +33,7 @@ static ERL_NIF_TERM img_load_nif(ErlNifEnv *env, int argc,
                                  const ERL_NIF_TERM argv[]) {
   char path[50];
   unsigned long int retval;
-  if (!enif_get_string(env, argv[0], path, 50, ERL_NIF_UTF8) <= 0) {
+  if (!enif_get_string(env, argv[0], path, 50, ERL_NIF_UTF8)) {
     return enif_make_badarg(env);
   }
 
