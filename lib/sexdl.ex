@@ -74,7 +74,7 @@ defmodule Sexdl do
   def sdl_window_mouse_grabbed, do: 0x00000100
   def sdl_window_input_focus, do: 0x00000200
   def sdl_window_mouse_focus, do: 0x00000400
-  # def sdl_window_fullscreen_desktop, do: Bitwise.bor(sdl_window_fullscreen(), 0x00001000)
+  def sdl_window_fullscreen_desktop, do: Bitwise.bor(sdl_window_fullscreen(), 0x00001000)
   def sdl_window_foreign, do: 0x00000800
   def sdl_window_allow_highdpi, do: 0x00002000
   def sdl_window_mouse_capture, do: 0x00004000
@@ -86,5 +86,5 @@ defmodule Sexdl do
   def sdl_window_keyboard_grabbed, do: 0x00100000
   def sdl_window_vulkan, do: 0x10000000
   def sdl_window_metal, do: 0x20000000
-  # def sdl_window_input_grabbed, do: sdl_window_mouse_grabbed()
+  def sdl_window_input_grabbed, do: sdl_window_mouse_grabbed()
 end
