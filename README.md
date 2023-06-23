@@ -1,7 +1,6 @@
 # Sexdl
 
-SDL wrapper library for Elixir
-
+SDL2 bindings for Elixir (NIFs)
 
 ## TODO
 
