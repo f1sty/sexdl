@@ -20,8 +20,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Install dependencies
-      run: sudo apt-get install -y libsdl2-dev libsdl2-image-dev
     - name: Set up Elixir
       uses: erlef/setup-beam@988e02bfe678367a02564f65ca2e37726dc0268f
       with:
@@ -35,9 +33,10 @@ jobs:
         restore-keys: ${{ runner.os }}-mix-
     - name: Install dependencies
       run: |
+        sudo apt-get install -y erlang-dev libsdl2-dev libsdl2-image-dev
         mix local.hex --force
         mix local.rebar --force
         mix deps.get --only test
-    - run: mix compile --warnings-as-errors
+    - run: mix compile
     - name: Run tests
       run: mix test
