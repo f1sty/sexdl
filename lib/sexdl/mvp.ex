@@ -15,14 +15,16 @@ defmodule Sexdl.Mvp do
            ),
          {:ok, window_surface} <- sdl_get_window_surface(window) do
       if not is_nil(bg_image_path) do
-        img_init(img_init_png())
+        img_init_png() |> img_init()
         {:ok, window_surface_img} = img_load(bg_image_path)
         sdl_blit_surface(window_surface_img, nil, window_surface, nil)
         sdl_free_surface(window_surface_img)
       end
 
       sdl_update_window_surface(window)
+
       Process.sleep(3000)
+
       sdl_free_surface(window_surface)
       img_quit()
       sdl_destroy_window(window)
