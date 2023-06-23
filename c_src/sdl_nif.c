@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_error.h>
+#include <SDL2/SDL_events.h>
 #include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_surface.h>
 #include <SDL2/SDL_video.h>
@@ -60,8 +61,8 @@ static ERL_NIF_TERM sdl_create_window_nif(ErlNifEnv *env, int argc,
     return enif_make_badarg(env);
   }
 
-  retval = SDL_CreateWindow(title, x, y, w, h, flags);
-  if (retval == NULL)
+  retval = (unsigned long int)SDL_CreateWindow(title, x, y, w, h, flags);
+  if (retval == 0)
     return SDL_ERROR_TUPLE;
   return enif_make_tuple2(env, atom_ok, enif_make_uint64(env, retval));
 }
@@ -74,8 +75,8 @@ static ERL_NIF_TERM sdl_get_window_surface_nif(ErlNifEnv *env, int argc,
     return enif_make_badarg(env);
   }
 
-  retval = SDL_GetWindowSurface((SDL_Window *)window);
-  if (retval == NULL)
+  retval = (unsigned long int)SDL_GetWindowSurface((SDL_Window *)window);
+  if (retval == 0)
     return SDL_ERROR_TUPLE;
   return enif_make_tuple2(env, atom_ok, enif_make_uint64(env, retval));
 }
@@ -108,9 +109,9 @@ static ERL_NIF_TERM sdl_convert_surface_nif(ErlNifEnv *env, int argc,
     return enif_make_badarg(env);
   }
 
-  retval = SDL_ConvertSurface((SDL_Surface *)surface_src,
-                              ((SDL_Surface *)surface_dst)->format, 0);
-  if (retval == NULL)
+  retval = (unsigned long int)SDL_ConvertSurface(
+      (SDL_Surface *)surface_src, ((SDL_Surface *)surface_dst)->format, 0);
+  if (retval == 0)
     return SDL_ERROR_TUPLE;
   return enif_make_tuple2(env, atom_ok, enif_make_uint64(env, retval));
 }
@@ -124,7 +125,7 @@ static ERL_NIF_TERM sdl_blit_surface_nif(ErlNifEnv *env, int argc,
     return enif_make_badarg(env);
   }
   if (argv[1] == atom_nil) {
-    src_rect = NULL;
+    src_rect = 0;
   } else if (!enif_get_uint64(env, argv[1], &src_rect)) {
     return enif_make_badarg(env);
   }
@@ -132,7 +133,7 @@ static ERL_NIF_TERM sdl_blit_surface_nif(ErlNifEnv *env, int argc,
     return enif_make_badarg(env);
   }
   if (argv[3] == atom_nil) {
-    dst_rect = NULL;
+    dst_rect = 0;
   } else if (!enif_get_uint64(env, argv[3], &dst_rect)) {
     return enif_make_badarg(env);
   }
@@ -176,6 +177,20 @@ static ERL_NIF_TERM sdl_quit_nif(ErlNifEnv *env, int argc,
   return atom_ok;
 }
 
+static ERL_NIF_TERM sdl_poll_event_nif(ErlNifEnv *env, int argc,
+                                       const ERL_NIF_TERM argv[]) {
+  unsigned long int event;
+  int retval;
+
+  if (!enif_get_uint64(env, argv[0], &event)) {
+    return enif_make_badarg(env);
+  }
+
+  retval = SDL_PollEvent((SDL_Event *)event);
+
+  return enif_make_int(env, retval);
+}
+
 static ErlNifFunc funcs[] = {
     {"sdl_init", 1, sdl_init_nif},
     {"sdl_create_window", 6, sdl_create_window_nif},
@@ -186,6 +201,7 @@ static ErlNifFunc funcs[] = {
     {"sdl_free_surface", 1, sdl_free_surface_nif},
     {"sdl_destroy_window", 1, sdl_destroy_window_nif},
     {"sdl_quit", 0, sdl_quit_nif},
+    {"sdl_poll_event", 1, sdl_poll_event_nif},
 };
 
 ERL_NIF_INIT(Elixir.Sexdl, funcs, load, NULL, NULL, NULL)

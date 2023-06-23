@@ -50,6 +50,7 @@ And you should see an owl on black background for the same time span:).
 - `SDL_FreeSurface`
 - `SDL_DestroyWindow`
 - `SDL_Quit`
+- `SDL_PollEvent`
 - `IMG_Init`
 - `IMG_Load`
 - `IMG_Quit`

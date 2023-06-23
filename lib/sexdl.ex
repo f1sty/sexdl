@@ -37,6 +37,9 @@ defmodule Sexdl do
   @spec sdl_quit() :: :ok
   def sdl_quit(), do: nif_not_loaded!()
 
+  @spec sdl_poll_event(pos_integer) :: non_neg_integer
+  def sdl_poll_event(_event), do: nif_not_loaded!()
+
   def sdl_init_timer, do: 0x00000001
   def sdl_init_audio, do: 0x00000010
   def sdl_init_video, do: 0x00000020

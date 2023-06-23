@@ -38,8 +38,8 @@ static ERL_NIF_TERM img_load_nif(ErlNifEnv *env, int argc,
     return enif_make_badarg(env);
   }
 
-  retval = IMG_Load(path);
-  if (retval == NULL)
+  retval = (unsigned long int)IMG_Load(path);
+  if (retval == 0)
     return SDL_ERROR_TUPLE;
   return enif_make_tuple2(env, atom_ok, enif_make_uint64(env, retval));
 }
