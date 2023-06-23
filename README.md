@@ -9,11 +9,11 @@ SDL wrapper library for Elixir
 - [x] research on SDL library
 - [x] MVP with window showed
 - [x] unify error handling in NIFs
+- [x] add helper functions into `Sexdl.Video` for `SDL_WindowFlags` enum values
 - [ ] make NIFs compilation process easier
 - [ ] fix `sdl_convert_surface_nif` to accept same params as API function
 - [ ] look into `enif_alloc_resource` more and decide how to handle pointers
 - [ ] separate `SDL2/SDL_video.h` functions into `Sexdl.Video` module (maybe?)
-- [ ] add helper functions into `Sexdl.Video` for `SDL_WindowFlags` enum values
 
 ## Run MVP
 
