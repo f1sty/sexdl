@@ -21,7 +21,6 @@ To compile NIFs and launch sanity test program, run:
 
 ```bash
 $ mix do deps.get, compile
-
 $ iex -S mix
 ```
 
