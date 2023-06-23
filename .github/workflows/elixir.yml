@@ -12,7 +12,7 @@ jobs:
   build:
 
     name: Build and test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu20
 
     env:
       MIX_ENV=test
