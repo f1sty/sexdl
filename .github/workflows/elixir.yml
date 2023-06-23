@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu20
 
     env:
-      MIX_ENV=test
+      MIX_ENV: test
 
     steps:
     - uses: actions/checkout@v3
