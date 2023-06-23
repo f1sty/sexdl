@@ -1,34 +1,36 @@
 defmodule Sexdl.Mvp do
-  import Sexdl
-  import Sexdl.Image
+  alias Sexdl, as: S
+  alias Sexdl.Video, as: V
+  alias Sexdl.Image, as: I
+  alias Sexdl.Surface, as: Sf
 
   def run(title, bg_image_path \\ nil, width \\ 600, height \\ 600) do
-    with :ok <- sdl_init(sdl_init_video()),
+    with :ok <- S.init(S.sdl_init_video()),
          {:ok, window} <-
-           sdl_create_window(
+           V.create_window(
              title,
-             sdl_windowpos_centered(),
-             sdl_windowpos_centered(),
+             S.sdl_windowpos_centered(),
+             S.sdl_windowpos_centered(),
              width,
              height,
-             sdl_window_shown()
+             S.sdl_window_shown()
            ),
-         {:ok, window_surface} <- sdl_get_window_surface(window) do
+         {:ok, window_surface} <- V.get_window_surface(window) do
       if not is_nil(bg_image_path) do
-        img_init_png() |> img_init()
-        {:ok, window_surface_img} = img_load(bg_image_path)
-        sdl_blit_surface(window_surface_img, nil, window_surface, nil)
-        sdl_free_surface(window_surface_img)
+        I.img_init_png() |> I.init()
+        {:ok, window_surface_img} = I.load(bg_image_path)
+        Sf.blit_surface(window_surface_img, nil, window_surface, nil)
+        Sf.free_surface(window_surface_img)
       end
 
-      sdl_update_window_surface(window)
+      V.update_window_surface(window)
 
       Process.sleep(3000)
 
-      sdl_free_surface(window_surface)
-      img_quit()
-      sdl_destroy_window(window)
-      sdl_quit()
+      Sf.free_surface(window_surface)
+      I.quit()
+      V.destroy_window(window)
+      S.quit()
     end
   end
 end

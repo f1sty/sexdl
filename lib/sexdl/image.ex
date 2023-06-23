@@ -5,17 +5,16 @@ defmodule Sexdl.Image do
   import Sexdl.Utils, only: [nif_not_loaded!: 0]
 
   @on_load :init
-
   def init, do: :erlang.load_nif(~c"c_src/sdl_image_nif", 0)
 
-  @spec img_init(non_neg_integer) :: :ok | {:error, charlist}
-  def img_init(_flags), do: nif_not_loaded!()
+  @spec init(non_neg_integer) :: :ok | {:error, charlist}
+  def init(_flags), do: nif_not_loaded!()
 
-  @spec img_load(charlist) :: {:ok, integer} | {:error, charlist}
-  def img_load(_path), do: nif_not_loaded!()
+  @spec load(charlist) :: {:ok, reference} | {:error, charlist}
+  def load(_path), do: nif_not_loaded!()
 
-  @spec img_quit() :: :ok
-  def img_quit(), do: nif_not_loaded!()
+  @spec quit() :: :ok
+  def quit(), do: nif_not_loaded!()
 
   def img_init_jpg, do: 0x00000001
   def img_init_png, do: 0x00000002

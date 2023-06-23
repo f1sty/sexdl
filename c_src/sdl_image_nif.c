@@ -1,6 +1,6 @@
-#include <SDL2/SDL.h>
 #include <SDL2/SDL_error.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_surface.h>
 #include <erl_nif.h>
 
 #define SDL_ERROR_TUPLE                                                        \
@@ -9,18 +9,21 @@
 
 ERL_NIF_TERM atom_error;
 ERL_NIF_TERM atom_ok;
+ErlNifResourceType *surface_t;
 
-// NOTE: init atoms and resource types in here.
 static int load(ErlNifEnv *env, void **priv_data, ERL_NIF_TERM load_info) {
   atom_error = enif_make_atom(env, "error");
   atom_ok = enif_make_atom(env, "ok");
+  surface_t = enif_open_resource_type(env, "SDL", "Surface", NULL,
+                                      ERL_NIF_RT_CREATE, NULL);
 
   return 0;
 }
 
-static ERL_NIF_TERM img_init_nif(ErlNifEnv *env, int argc,
-                                 const ERL_NIF_TERM argv[]) {
-  int flags, retval;
+static ERL_NIF_TERM init_nif(ErlNifEnv *env, int argc,
+                             const ERL_NIF_TERM argv[]) {
+  int flags;
+
   if (!enif_get_int(env, argv[0], &flags)) {
     return enif_make_badarg(env);
   }
@@ -30,31 +33,32 @@ static ERL_NIF_TERM img_init_nif(ErlNifEnv *env, int argc,
   return atom_ok;
 }
 
-static ERL_NIF_TERM img_load_nif(ErlNifEnv *env, int argc,
-                                 const ERL_NIF_TERM argv[]) {
+static ERL_NIF_TERM load_nif(ErlNifEnv *env, int argc,
+                             const ERL_NIF_TERM argv[]) {
   char path[50];
-  unsigned long int retval;
+  SDL_Surface *surface;
+
   if (!enif_get_string(env, argv[0], path, 50, ERL_NIF_UTF8)) {
     return enif_make_badarg(env);
   }
 
-  retval = (unsigned long int)IMG_Load(path);
-  if (retval == 0)
+  surface = IMG_Load(path);
+  if (surface == NULL)
     return SDL_ERROR_TUPLE;
-  return enif_make_tuple2(env, atom_ok, enif_make_uint64(env, retval));
+  return enif_make_tuple2(env, atom_ok, enif_make_resource(env, surface));
 }
 
-static ERL_NIF_TERM img_quit_nif(ErlNifEnv *env, int argc,
-                                 const ERL_NIF_TERM argv[]) {
+static ERL_NIF_TERM quit_nif(ErlNifEnv *env, int argc,
+                             const ERL_NIF_TERM argv[]) {
   IMG_Quit();
 
   return atom_ok;
 }
 
 static ErlNifFunc funcs[] = {
-    {"img_init", 1, img_init_nif},
-    {"img_load", 1, img_load_nif},
-    {"img_quit", 0, img_quit_nif},
+    {"init", 1, init_nif},
+    {"load", 1, load_nif},
+    {"quit", 0, quit_nif},
 };
 
 ERL_NIF_INIT(Elixir.Sexdl.Image, funcs, load, NULL, NULL, NULL)
