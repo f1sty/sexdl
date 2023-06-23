@@ -38,3 +38,18 @@ iex> Sexdl.Mvp.run(~c"title", ~c"priv/test.png")
 ```
 
 And you should see an owl on black background for the same time span:).
+
+## Implemented bindings (so far)
+
+- `SDL_Init`
+- `SDL_CreateWindow`
+- `SDL_GetWindowSurface`
+- `SDL_UpdateWindowSurface`
+- `SDL_BlitSurface`
+- `SDL_FreeSurface`
+- `SDL_DestroyWindow`
+- `SDL_Quit`
+- `IMG_Init`
+- `IMG_Load`
+- `IMG_Quit`
+- `SDL_ConvertSurface` partially (see TODO list)
