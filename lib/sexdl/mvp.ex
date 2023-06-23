@@ -2,7 +2,7 @@ defmodule Sexdl.Mvp do
   import Sexdl
   import Sexdl.Image
 
-  def run(title, width \\ 600, height \\ 600, bg_image_path \\ nil) do
+  def run(title, bg_image_path \\ nil, width \\ 600, height \\ 600) do
     with :ok <- sdl_init(sdl_init_video()),
          {:ok, window} <-
            sdl_create_window(

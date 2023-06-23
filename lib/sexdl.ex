@@ -24,7 +24,8 @@ defmodule Sexdl do
   @spec sdl_convert_surface(pos_integer, pos_integer) :: {:ok, pos_integer} | {:error, charlist}
   def sdl_convert_surface(_window_surface, _window), do: nif_not_loaded!()
 
-  @spec sdl_blit_surface(pos_integer, non_neg_integer, pos_integer, non_neg_integer) :: :ok | {:error, charlist}
+  @spec sdl_blit_surface(pos_integer, non_neg_integer, pos_integer, non_neg_integer) ::
+          :ok | {:error, charlist}
   def sdl_blit_surface(_surface_src, _src_rect, _surface_dst, _dst_rect), do: nif_not_loaded!()
 
   @spec sdl_free_surface(non_neg_integer) :: :ok

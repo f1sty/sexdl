@@ -3,6 +3,10 @@
 #include <SDL2/SDL_image.h>
 #include <erl_nif.h>
 
+#define SDL_ERROR_TUPLE                                                        \
+  enif_make_tuple2(env, atom_error,                                            \
+                   enif_make_string(env, SDL_GetError(), ERL_NIF_UTF8))
+
 ERL_NIF_TERM atom_error;
 ERL_NIF_TERM atom_ok;
 
@@ -21,11 +25,8 @@ static ERL_NIF_TERM img_init_nif(ErlNifEnv *env, int argc,
     return enif_make_badarg(env);
   }
 
-  if (IMG_Init(flags) != flags) {
-    return enif_make_tuple2(
-        env, atom_error, enif_make_string(env, SDL_GetError(), ERL_NIF_UTF8));
-  }
-
+  if (IMG_Init(flags) != flags)
+    return SDL_ERROR_TUPLE;
   return atom_ok;
 }
 
@@ -38,12 +39,8 @@ static ERL_NIF_TERM img_load_nif(ErlNifEnv *env, int argc,
   }
 
   retval = IMG_Load(path);
-
-  if (retval == NULL) {
-    return enif_make_tuple2(
-        env, atom_error, enif_make_string(env, SDL_GetError(), ERL_NIF_UTF8));
-  }
-
+  if (retval == NULL)
+    return SDL_ERROR_TUPLE;
   return enif_make_tuple2(env, atom_ok, enif_make_uint64(env, retval));
 }
 
@@ -54,10 +51,10 @@ static ERL_NIF_TERM img_quit_nif(ErlNifEnv *env, int argc,
   return atom_ok;
 }
 
-static ErlNifFunc nif_funcs[] = {
+static ErlNifFunc funcs[] = {
     {"img_init", 1, img_init_nif},
     {"img_load", 1, img_load_nif},
     {"img_quit", 0, img_quit_nif},
 };
 
-ERL_NIF_INIT(Elixir.Sexdl.Image, nif_funcs, load, NULL, NULL, NULL)
+ERL_NIF_INIT(Elixir.Sexdl.Image, funcs, load, NULL, NULL, NULL)
