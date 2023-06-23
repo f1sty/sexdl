@@ -10,7 +10,7 @@ SDL wrapper library for Elixir
 - [x] MVP with window showed
 - [x] unify error handling in NIFs
 - [x] add helper functions into `Sexdl.Video` for `SDL_WindowFlags` enum values
-- [ ] make NIFs compilation process easier
+- [x] make NIFs compilation process easier
 - [ ] fix `sdl_convert_surface_nif` to accept same params as API function
 - [ ] look into `enif_alloc_resource` more and decide how to handle pointers
 - [ ] separate `SDL2/SDL_video.h` functions into `Sexdl.Video` module (maybe?)
@@ -20,7 +20,9 @@ SDL wrapper library for Elixir
 To compile NIFs and launch sanity test program, run:
 
 ```bash
-$ cd c_src/ && ./build.sh && .. && iex -S mix run
+$ mix do deps.get, compile
+
+$ iex -S mix
 ```
 
 followed by:
