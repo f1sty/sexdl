@@ -10,10 +10,11 @@ SDL2 bindings for Elixir (NIFs)
 - [x] unify error handling in NIFs
 - [x] add helper functions into `Sexdl.Video` for `SDL_WindowFlags` enum values
 - [x] make NIFs compilation process easier
-- [ ] fix `sdl_convert_surface_nif` to accept same params as API function
-- [ ] look into `enif_alloc_resource` more and decide how to handle pointers
-- [ ] separate `SDL2/SDL_video.h` functions into `Sexdl.Video` module (maybe?)
+- [x] fix `sdl_convert_surface_nif` to accept same params as API function
+- [x] look into `enif_alloc_resource` more and decide how to handle pointers
+- [x] separate `SDL2/SDL_video.h` functions into `Sexdl.Video` module (maybe?)
 - [ ] fix `elixir actions`
+- [ ] return map from `new` function in `sdl_event.c`
 
 ## Run MVP
 

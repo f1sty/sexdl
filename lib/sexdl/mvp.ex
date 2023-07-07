@@ -3,6 +3,7 @@ defmodule Sexdl.Mvp do
   alias Sexdl.Video, as: V
   alias Sexdl.Image, as: I
   alias Sexdl.Surface, as: Sf
+  alias Sexdl.Event, as: E
 
   def run(title, bg_image_path \\ nil, width \\ 600, height \\ 600) do
     with :ok <- S.init(S.sdl_init_video()),
@@ -24,6 +25,8 @@ defmodule Sexdl.Mvp do
       end
 
       V.update_window_surface(window)
+
+      _event_queue = E.new() |> IO.inspect()
 
       Process.sleep(3000)
 

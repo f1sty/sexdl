@@ -2,6 +2,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_surface.h>
 #include <erl_nif.h>
+#include <stdint.h>
 
 #define SDL_ERROR_TUPLE                                                        \
   enif_make_tuple2(env, atom_error,                                            \
@@ -9,13 +10,13 @@
 
 ERL_NIF_TERM atom_error;
 ERL_NIF_TERM atom_ok;
-ErlNifResourceType *surface_t;
+// ErlNifResourceType *surface_t;
 
 static int load(ErlNifEnv *env, void **priv_data, ERL_NIF_TERM load_info) {
   atom_error = enif_make_atom(env, "error");
   atom_ok = enif_make_atom(env, "ok");
-  surface_t = enif_open_resource_type(env, "SDL", "Surface", NULL,
-                                      ERL_NIF_RT_CREATE, NULL);
+  // surface_t = enif_open_resource_type(env, "SDL", "Surface", NULL,
+  //                                     ERL_NIF_RT_CREATE, NULL);
 
   return 0;
 }
@@ -45,7 +46,8 @@ static ERL_NIF_TERM load_nif(ErlNifEnv *env, int argc,
   surface = IMG_Load(path);
   if (surface == NULL)
     return SDL_ERROR_TUPLE;
-  return enif_make_tuple2(env, atom_ok, enif_make_resource(env, surface));
+  return enif_make_tuple2(env, atom_ok,
+                          enif_make_uint64(env, (uint64_t)surface));
 }
 
 static ERL_NIF_TERM quit_nif(ErlNifEnv *env, int argc,
