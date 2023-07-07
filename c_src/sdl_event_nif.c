@@ -22,7 +22,7 @@ static int load(ErlNifEnv *env, void **priv_data, ERL_NIF_TERM load_info) {
   atom_type = enif_make_atom(env, "type");
   atom_ref = enif_make_atom(env, "ref");
   atom_struct = enif_make_atom(env, "__struct__");
-  atom_event = enif_make_atom(env, "Elixir.Event");
+  atom_event = enif_make_atom(env, "Elixir.Sexdl.Event");
   event_t = enif_open_resource_type(env, "SDL", "Event", NULL,
                                     ERL_NIF_RT_CREATE, NULL);
 
