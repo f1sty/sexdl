@@ -25,15 +25,20 @@ defmodule Sexdl.Mvp do
       end
 
       V.update_window_surface(window)
+      E.new() |> loop(window_surface, window)
+    end
+  end
 
-      _event_queue = E.new() |> IO.inspect()
+  def loop(%{ref: event_ref} = event_queue, window_surface, window) do
+    case E.poll_event(event_ref) do
+      %{type: 0x100} ->
+        Sf.free_surface(window_surface)
+        I.quit()
+        V.destroy_window(window)
+        S.quit()
 
-      Process.sleep(3000)
-
-      Sf.free_surface(window_surface)
-      I.quit()
-      V.destroy_window(window)
-      S.quit()
+      _ ->
+        loop(event_queue, window_surface, window)
     end
   end
 end
