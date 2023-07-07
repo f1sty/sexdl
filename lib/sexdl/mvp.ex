@@ -29,8 +29,8 @@ defmodule Sexdl.Mvp do
     end
   end
 
-  def loop(%{ref: event_ref} = event_queue, window_surface, window) do
-    case E.poll_event(event_ref) do
+  def loop(%{ref: ref} = event, window_surface, window) do
+    case E.poll_event(ref) do
       %{type: 0x100} ->
         Sf.free_surface(window_surface)
         I.quit()
@@ -38,7 +38,9 @@ defmodule Sexdl.Mvp do
         S.quit()
 
       _ ->
-        loop(event_queue, window_surface, window)
+        IO.inspect(event)
+        Process.sleep(100)
+        loop(event, window_surface, window)
     end
   end
 end
