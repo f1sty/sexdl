@@ -13,8 +13,8 @@ SDL2 bindings for Elixir (NIFs)
 - [x] fix `sdl_convert_surface_nif` to accept same params as API function
 - [x] look into `enif_alloc_resource` more and decide how to handle pointers
 - [x] separate `SDL2/SDL_video.h` functions into `Sexdl.Video` module (maybe?)
+- [x] return map from `new` function in `sdl_event.c`
 - [ ] fix `elixir actions`
-- [ ] return map from `new` function in `sdl_event.c`
 
 ## Run MVP
 
