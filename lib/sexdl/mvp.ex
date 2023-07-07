@@ -25,22 +25,21 @@ defmodule Sexdl.Mvp do
       end
 
       V.update_window_surface(window)
-      E.new() |> loop(window_surface, window)
+      E.new() |> Map.get(:ref) |> loop(window_surface, window)
     end
   end
 
-  def loop(%{ref: ref} = event, window_surface, window) do
+  def loop(ref, window_surface, window) do
     case E.poll_event(ref) do
-      %{type: 0x100} ->
+      %{type: :SDL_QUIT} ->
         Sf.free_surface(window_surface)
         I.quit()
         V.destroy_window(window)
         S.quit()
 
-      _ ->
+      event ->
         IO.inspect(event)
-        Process.sleep(100)
-        loop(event, window_surface, window)
+        loop(ref, window_surface, window)
     end
   end
 end

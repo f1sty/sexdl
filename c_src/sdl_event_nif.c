@@ -13,7 +13,7 @@ ERL_NIF_TERM atom_type;
 ERL_NIF_TERM atom_ref;
 ERL_NIF_TERM atom_struct;
 ERL_NIF_TERM atom_event;
-ERL_NIF_TERM event_types[65535];
+ERL_NIF_TERM event_types[65536];
 ErlNifResourceType *event_t;
 
 static int load(ErlNifEnv *env, void **priv_data, ERL_NIF_TERM load_info) {
@@ -136,7 +136,6 @@ static ERL_NIF_TERM poll_event_nif(ErlNifEnv *env, int argc,
 
   retval = SDL_PollEvent(res);
 
-  printf("%p\n", event_types[res->type]);
   ERL_NIF_TERM keys[] = {atom_struct, atom_type, atom_ref};
   ERL_NIF_TERM vals[] = {atom_event, event_types[res->type], argv[0]};
   ERL_NIF_TERM map;
