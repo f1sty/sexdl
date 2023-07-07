@@ -10,15 +10,12 @@
 ERL_NIF_TERM atom_error;
 ERL_NIF_TERM atom_ok;
 ERL_NIF_TERM atom_nil;
-ErlNifResourceType *window_t;
 
 // NOTE: init atoms and resource types in here.
 static int load(ErlNifEnv *env, void **priv_data, ERL_NIF_TERM load_info) {
   atom_error = enif_make_atom(env, "error");
   atom_ok = enif_make_atom(env, "ok");
   atom_nil = enif_make_atom(env, "nil");
-  window_t = enif_open_resource_type(env, "SDL", "Window", NULL,
-                                     ERL_NIF_RT_CREATE, NULL);
 
   return 0;
 }
@@ -27,7 +24,7 @@ static ERL_NIF_TERM create_window_nif(ErlNifEnv *env, int argc,
                                       const ERL_NIF_TERM argv[]) {
   char title[50];
   int x, y, w, h, flags;
-  SDL_Window *window;
+  unsigned long window;
 
   if (!enif_get_string(env, argv[0], title, 50, ERL_NIF_UTF8)) {
     return enif_make_badarg(env);
@@ -48,20 +45,20 @@ static ERL_NIF_TERM create_window_nif(ErlNifEnv *env, int argc,
     return enif_make_badarg(env);
   }
 
-  window = SDL_CreateWindow(title, x, y, w, h, flags);
+  window = (unsigned long)SDL_CreateWindow(title, x, y, w, h, flags);
   // ERL_NIF_TERM retval = enif_make_resource(env, window);
   // enif_fprintf(stdout, "window: %p\nterm: %T\n", window, retval);
-  if (window == NULL)
+  if (window == 0)
     return SDL_ERROR_TUPLE;
   // return enif_make_tuple2(env, atom_ok, retval);
-  return enif_make_tuple2(env, atom_ok, enif_make_resource(env, window));
+  return enif_make_tuple2(env, atom_ok, enif_make_uint64(env, window));
 }
 
 static ERL_NIF_TERM destroy_window_nif(ErlNifEnv *env, int argc,
                                        const ERL_NIF_TERM argv[]) {
   SDL_Window *window;
 
-  if (!enif_get_resource(env, argv[0], window_t, (void **)&window)) {
+  if (!enif_get_uint64(env, argv[0], (unsigned long *)&window)) {
     return enif_make_badarg(env);
   }
 
@@ -74,7 +71,7 @@ static ERL_NIF_TERM get_window_surface_nif(ErlNifEnv *env, int argc,
   SDL_Window *window;
   SDL_Surface *surface;
 
-  if (!enif_get_resource(env, argv[0], window_t, (void **)&window)) {
+  if (!enif_get_uint64(env, argv[0], (unsigned long *)&window)) {
     return enif_make_badarg(env);
   }
 
@@ -88,7 +85,7 @@ static ERL_NIF_TERM update_window_surface_nif(ErlNifEnv *env, int argc,
                                               const ERL_NIF_TERM argv[]) {
   SDL_Window *window;
 
-  if (!enif_get_resource(env, argv[0], window_t, (void **)&window)) {
+  if (!enif_get_uint64(env, argv[0], (unsigned long *)&window)) {
     return enif_make_badarg(env);
   }
 
