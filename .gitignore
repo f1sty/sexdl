@@ -1,5 +1,6 @@
 # The directory Mix will write compiled artifacts to.
 a.out
+.elixir-tools/
 /_build/
 /c_src/*.png
 /c_src/*.so

@@ -62,4 +62,11 @@ defmodule Sexdl do
   def sdl_window_vulkan, do: 0x10000000
   def sdl_window_metal, do: 0x20000000
   def sdl_window_input_grabbed, do: sdl_window_mouse_grabbed()
+
+  def __using__(_args) do
+    quote do
+      alias Sexdl.{Video, Event, Surface, Image}
+      import Sexdl 
+    end
+  end
 end

@@ -1,5 +1,6 @@
 defmodule Sexdl.Event do
   import Sexdl.Utils, only: [nif_not_loaded!: 0]
+
   defstruct [:type, :ref]
 
   @on_load :init
