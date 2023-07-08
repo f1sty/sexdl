@@ -127,23 +127,28 @@ static ERL_NIF_TERM new_nif(ErlNifEnv *env, int argc,
 
 static ERL_NIF_TERM poll_event_nif(ErlNifEnv *env, int argc,
                                    const ERL_NIF_TERM argv[]) {
-  SDL_Event *res;
+  ERL_NIF_TERM ref;
+  ERL_NIF_TERM type;
+  SDL_Event *event;
   int retval;
 
-  if (!enif_get_resource(env, argv[0], event_t, (void **)&res)) {
-    return enif_make_badarg(env);
-  }
+  if (enif_get_map_value(env, argv[0], atom_ref, &ref) &&
+      enif_get_map_value(env, argv[0], atom_type, &type) &&
+      enif_get_resource(env, ref, event_t, (void **)&event)) {
 
-  retval = SDL_PollEvent(res);
+    retval = SDL_PollEvent(event);
 
-  ERL_NIF_TERM keys[] = {atom_struct, atom_type, atom_ref};
-  ERL_NIF_TERM vals[] = {atom_event, event_types[res->type], argv[0]};
-  ERL_NIF_TERM map;
+    ERL_NIF_TERM map;
+    ERL_NIF_TERM keys[] = {atom_struct, atom_type, atom_ref};
+    ERL_NIF_TERM vals[] = {atom_event, event_types[event->type], ref};
 
-  if (enif_make_map_from_arrays(env, keys, vals, 3, &map) && retval) {
+    if (!enif_make_map_from_arrays(env, keys, vals, 3, &map)) {
+      return enif_make_badarg(env);
+    }
+
     return map;
   } else {
-    return atom_nil;
+    return enif_make_badarg(env);
   }
 }
 

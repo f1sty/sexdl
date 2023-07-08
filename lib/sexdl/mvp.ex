@@ -3,7 +3,7 @@ defmodule Sexdl.Mvp do
   alias Sexdl.Video, as: V
   alias Sexdl.Image, as: I
   alias Sexdl.Surface, as: Sf
-  alias Sexdl.Event, as: E
+  alias Sexdl.Event
 
   def run(title, bg_image_path \\ nil, width \\ 600, height \\ 600) do
     with :ok <- S.init(S.sdl_init_video()),
@@ -25,21 +25,39 @@ defmodule Sexdl.Mvp do
       end
 
       V.update_window_surface(window)
-      E.new() |> Map.get(:ref) |> loop(window_surface, window)
+      Event.new() |> loop(window_surface, window)
     end
   end
 
-  def loop(ref, window_surface, window) do
-    case E.poll_event(ref) do
-      %{type: :SDL_QUIT} ->
+  def loop(event, window_surface, window) do
+    case Event.poll_event(event) do
+      %Event{type: :SDL_QUIT} ->
         Sf.free_surface(window_surface)
         I.quit()
         V.destroy_window(window)
         S.quit()
 
-      event ->
+      %Event{type: :SDL_MOUSEMOTION} = event ->
         IO.inspect(event)
-        loop(ref, window_surface, window)
+        loop(event, window_surface, window)
+
+      %Event{type: :SDL_WINDOWEVENT} = event ->
+        IO.inspect(event)
+        loop(event, window_surface, window)
+
+      %Event{type: :SDL_KEYDOWN} = event ->
+        IO.puts("key pressed")
+        loop(event, window_surface, window)
+
+      %Event{type: :SDL_TEXTINPUT} = event ->
+        IO.puts("input registered")
+        loop(event, window_surface, window)
+
+      %Event{type: :SDL_KEYUP} = event ->
+        loop(event, window_surface, window)
+
+      %Event{type: :SDL_POLLSENTINEL} = event ->
+        loop(event, window_surface, window)
     end
   end
 end

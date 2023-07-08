@@ -10,22 +10,11 @@
 ERL_NIF_TERM atom_error;
 ERL_NIF_TERM atom_ok;
 ERL_NIF_TERM atom_nil;
-// ErlNifResourceType *surface_t;
-// ErlNifResourceType *rect_t;
-// ErlNifResourceType *pixel_format_t;
 
-// NOTE: init atoms and resource types in here.
 static int load(ErlNifEnv *env, void **priv_data, ERL_NIF_TERM load_info) {
   atom_error = enif_make_atom(env, "error");
   atom_ok = enif_make_atom(env, "ok");
   atom_nil = enif_make_atom(env, "nil");
-  // surface_t = enif_open_resource_type(env, "SDL", "Surface", NULL,
-  //                                     ERL_NIF_RT_CREATE, NULL);
-  // rect_t = enif_open_resource_type(env, "SDL", "Rect", NULL,
-  // ERL_NIF_RT_CREATE,
-  //                                  NULL);
-  // pixel_format_t = enif_open_resource_type(env, "SDL", "PixelFormat", NULL,
-  //                                          ERL_NIF_RT_CREATE, NULL);
 
   return 0;
 }
